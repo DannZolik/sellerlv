@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class AdvertCategory extends Model
 {
     use HasFactory;
+    protected $table = "advert_categories";
 }
