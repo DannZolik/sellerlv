@@ -9,4 +9,5 @@ class UserData extends Model
 {
     use HasFactory;
     protected $table = "user_data";
+    protected $fillable = ["value", "isPrivate", "userID", "userDataTypeID"];
 }

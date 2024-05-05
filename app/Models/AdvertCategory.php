@@ -9,4 +9,5 @@ class AdvertCategory extends Model
 {
     use HasFactory;
     protected $table = "advert_categories";
+    protected $fillable = ["value"];
 }
