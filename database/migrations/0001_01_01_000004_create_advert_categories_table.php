@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('advert_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('Value', 128)->nullable();
+            $table->string('value', 128)->nullable();
             $table->timestamps();
         });
     }

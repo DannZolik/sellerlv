@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('user_types', function (Blueprint $table) {
             $table->id();
-            $table->string('TypeValue')->nullable();
+            $table->string('typeValue')->nullable();
             $table->timestamps();
         });
     }

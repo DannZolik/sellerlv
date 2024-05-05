@@ -19,9 +19,9 @@ return new class extends Migration
             $table->timestamp("activeUntil")->nullable();
             $table->char("status", 3)->nullable();
             $table->integer('views')->nullable();
-            $table->foreignId('UserID')->nullable()->constrained('users')
+            $table->foreignId('userID')->nullable()->constrained('users')
                 ->onUpdate('cascade')->onDelete('set null');
-            $table->foreignId('CategoryID')->nullable()->constrained('advert_categories')
+            $table->foreignId('categoryID')->nullable()->constrained('advert_categories')
                 ->onUpdate('cascade')->onDelete('set null');
             $table->timestamps();
         });

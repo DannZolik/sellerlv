@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('user_data', function (Blueprint $table) {
             $table->id();
-            $table->string('Value', 128)->nullable();
+            $table->string('value', 128)->nullable();
             $table->boolean('isPrivate')->nullable();
-            $table->foreignId('UserID')->nullable()->constrained('users')
+            $table->foreignId('userID')->nullable()->constrained('users')
                 ->onUpdate('cascade')->onDelete('set null');
-            $table->foreignId('UserDataTypeID')->nullable()->constrained('user_types')
+            $table->foreignId('userDataTypeID')->nullable()->constrained('user_types')
                 ->onUpdate('cascade')->onDelete('set null');
 
             $table->timestamps();

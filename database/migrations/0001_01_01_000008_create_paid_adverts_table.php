@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('paid_adverts', function (Blueprint $table) {
             $table->id();
-            $table->char('Status', 3)->nullable();
-            $table->timestamp('ActiveUntil')->nullable();
-            $table->integer('Views')->nullable();
-            $table->foreignId('AdvertID')->nullable()->constrained('adverts')
+            $table->char('status', 3)->nullable();
+            $table->timestamp('activeUntil')->nullable();
+            $table->integer('views')->nullable();
+            $table->foreignId('advertID')->nullable()->constrained('adverts')
                 ->onUpdate('cascade')->onDelete('set null');
             $table->timestamps();
         });
