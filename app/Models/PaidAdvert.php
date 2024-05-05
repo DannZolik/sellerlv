@@ -10,4 +10,8 @@ class PaidAdvert extends Model
     use HasFactory;
     protected $table = "paid_adverts";
     protected $fillable = ["status", "activeUntil", "views", "advertID"];
+
+    public function advert(){
+        return $this->belongsTo(Advert::class, 'advertID');
+    }
 }
