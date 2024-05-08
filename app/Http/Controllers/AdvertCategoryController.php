@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdvertCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AdvertCategoryController extends Controller
 {
@@ -17,6 +19,18 @@ class AdvertCategoryController extends Controller
     }
 
     public function create(Request $request){
+        $validator = Validator::make($request->all(), [
+            'value' => 'required|max:128'
+        ]);
+
+        if ($validator->fails()) {
+            return $validator->errors();
+        }
+
+        $validated = $validator->validated();
+        $model = new AdvertCategory();
+        $model['value'] = $validated['value'];
+        $model->save();
 
     }
 
