@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserTypes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -14,11 +15,19 @@ class UserController extends Controller
 
     }
 
-    public function profile(Request $request)
+    public function profile(Request $request, $id)
     {
-        $user = Auth::user();
+
+        $auth_user = Auth::user();
+        $user = User::find($id);
+        if ($user == null){
+            return redirect('/404');
+        }
+        $userTypes = UserTypes::all();
         return view('user_profile', [
-            'user' => $user
+            'user' => $user,
+            'userTypes' => $userTypes,
+            'authUser' => $auth_user
         ]);
 
     }
@@ -37,12 +46,12 @@ class UserController extends Controller
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        ]);
 
     }
 
     public function create(Request $request){
-        $validator = Validator::make($request->all(), ['email'=>'required|email',
+        $validator = Validator::make($request->all(), ['email'=>'required|email|unique:App\Models\User,email',
             'password'=>'required', 'name' => 'required', 'password_confirmation' => 'required|same:password' ]);
         if ($validator->fails()) {
             return back()->withErrors($validator->errors())->withInput();
@@ -62,7 +71,26 @@ class UserController extends Controller
 
     }
 
-    public function update(Request $request){
+    public function update(Request $request, $id){
+        $user = Auth::user();
+        if ($user->id != $id){
+            return;
+        }
+        $validator = Validator::make($request->all(), [
+            'email'=>'required|email',
+            'userTypeID' => '',
+            'name' => 'required'
+        ]);
+
+//        if ($validator->fails()) {
+//            return response()->json(['errors' => $validator->errors()], 422);
+//        }
+
+        $validated = $validator->validated();
+
+        $affectedRows = User::where('id', $id)->update($validated);
+        return redirect()->back();
+
 
     }
 
@@ -76,6 +104,6 @@ class UserController extends Controller
 
     public function logout(Request $request){
         Auth::logout();
-        return redirect()->back();
+        return redirect()->back()->with('user', null);
     }
 }

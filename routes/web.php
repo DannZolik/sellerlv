@@ -15,3 +15,4 @@ Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/users/{id}', [UserController::class, 'profile'])->name('users.profile');
+Route::post('/users/{id}/update', [UserController::class, 'update'])->name('users.update');

@@ -33,7 +33,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container ms-1">
         <!-- Logo -->
-        <a class="navbar-brand" href="#"><img src="/logo.png" alt="Logo" height="30"></a>
+        <a class="navbar-brand" href="{{route('home')}}"><img src="/logo.png" alt="Logo" height="30"></a>
         <!-- Navbar toggler -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -59,20 +59,20 @@
                             Profile
                         </button>
                         <ul class="dropdown-menu dropdown-menu-xl text-small px-2" aria-labelledby="dropdownUser1">
-                            @if(isset($user))
+                            @if(isset($authUser))
                                 <li class="">
                                     <div class="d-flex align-items-center">
                                         <img src="profile-picture.jpg" alt="Profile Picture" class="rounded-circle me-2" style="width: 32px; height: 32px;">
                                         <div>
-                                            <span class="fw-bold">{{$user['name']}}</span>
+                                            <span class="fw-bold">{{$authUser['name']}}</span>
                                             <br>
-                                            <span>{{$user['email']}}</span>
+                                            <span>{{$authUser['email']}}</span>
                                         </div>
                                     </div>
                                 </li>
                                 <!-- Profile Button -->
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{{route('users.profile', $user['id'])}}">Profile</a></li>
+                                <li><a class="dropdown-item" href="{{route('users.profile', $authUser['id'])}}">Profile</a></li>
                                 <!-- Logout Button -->
                                 <li><a class="dropdown-item" href="{{route('logout')}}">Logout</a></li>
                             @else
@@ -128,30 +128,36 @@
             <div class="col-md-6 offset-md-3">
                 <div class="card">
                     <div class="card-body">
+
                         <h5 class="card-title">User Profile</h5>
-                        <form>
+                        <form method="POST" action="{{route('users.update', $user['id'] ?? 0)}}">
+                            @csrf
                             <div class="mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="name" placeholder="Enter name">
+                                <label for="name" class="form-label"></label>
+                                <input type="text" name="name" class="form-control" id="name" placeholder="Enter name" value="{{$user['name'] ?? ''}}">
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" placeholder="Enter email">
+                                <input type="email" name="email" class="form-control" id="email" placeholder="Enter email" value="{{$user['email'] ?? ''}}">
                             </div>
-                            <div class="mb-3">
-                                <label for="userStatus" class="form-label">Status</label>
-                                <select class="form-select" id="userStatus">
-                                    <option value="active">Active</option>
-                                    <option value="inactive">Inactive</option>
-                                    <option value="suspended">Suspended</option>
-                                </select>
-                            </div>
+{{--                            <div class="mb-3">--}}
+{{--                                <label for="userStatus" class="form-label">Status</label>--}}
+{{--                                <select class="form-select" id="userStatus">--}}
+{{--                                    <option value="active">Active</option>--}}
+{{--                                    <option value="inactive">Inactive</option>--}}
+{{--                                    <option value="suspended">Suspended</option>--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
                             <div class="mb-3">
                                 <label for="userTypeID" class="form-label">User Type</label>
-                                <select class="form-select" id="userTypeID">
-                                    <option value="1">Type 1</option>
-                                    <option value="2">Type 2</option>
-                                    <option value="3">Type 3</option>
+                                <select class="form-select" name="userTypeID" id="userTypeID">
+                                    <option value="" {{isset($user['userType']) ?: 'selected'}}>Null</option>
+                                    @foreach($userTypes as $value)
+                                        <option value="{{$value['id']}}" {{$user['userTypeID'] ?? '' === $value['id']  ? 'selected':''}}>{{$value['typeValue']}}</option>
+                                    @endforeach
+{{--                                    <option value="1">Type 1</option>--}}
+{{--                                    <option value="2">Type 2</option>--}}
+{{--                                    <option value="3">Type 3</option>--}}
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-primary">Save Changes</button>

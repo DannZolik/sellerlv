@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seller.lv | Home</title>
-{{--    <link rel="icon" href="favicon.ico" type="image/x-icon">--}}
-    <!-- Custom styles -->
     <style>
         /* Add your custom styles here */
         /* Sidebar */
@@ -34,7 +32,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container ms-1">
         <!-- Logo -->
-        <a class="navbar-brand" href="#"><img src="logo.png" alt="Logo" height="30"></a>
+        <a class="navbar-brand" href="{{route('home')}}"><img src="/logo.png" alt="Logo" height="30"></a>
         <!-- Navbar toggler -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -60,20 +58,20 @@
                             Profile
                         </button>
                         <ul class="dropdown-menu dropdown-menu-xl text-small px-2" aria-labelledby="dropdownUser1">
-                            @if(isset($user))
+                            @if(isset($authUser))
                                 <li class="">
                                     <div class="d-flex align-items-center">
                                         <img src="profile-picture.jpg" alt="Profile Picture" class="rounded-circle me-2" style="width: 32px; height: 32px;">
                                         <div>
-                                            <span class="fw-bold">{{$user['name']}}</span>
+                                            <span class="fw-bold">{{$authUser['name']}}</span>
                                             <br>
-                                            <span>{{$user['email']}}</span>
+                                            <span>{{$authUser['email']}}</span>
                                         </div>
                                     </div>
                                 </li>
                                 <!-- Profile Button -->
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{{route('users.profile', $user['id'])}}">Profile</a></li>
+                                <li><a class="dropdown-item" href="{{route('users.profile', $authUser['id'])}}">Profile</a></li>
                                 <!-- Logout Button -->
                                 <li><a class="dropdown-item" href="{{route('logout')}}">Logout</a></li>
                             @else
