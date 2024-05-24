@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('advert_categories', function (Blueprint $table) {
             $table->id();
             $table->string('value', 128)->nullable();
+            $table->string('image')->nullable();
+            $table->string('route')->nullable();
             $table->timestamps();
         });
     }
