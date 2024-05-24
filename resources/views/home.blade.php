@@ -39,7 +39,7 @@
         <div class="row mt-1 row-cols-2 row-cols-sm-3 row-cols-md-4 g-3">
             @foreach($categories as $category)
                 <div class="col">
-                    <a href="{{route('category-'.$category->route)}}" style="text-decoration: none;">
+                    <a href="{{route('category-show', $category->route)}}" style="text-decoration: none;">
                         <div class="card shadow-sm">
                             <div class="card-img-top d-flex align-items-center justify-content-center" style="height: 200px; background-color: #f3f3f3;">
                                 <div class="text-center" style="width: 100%; padding: 10px;">

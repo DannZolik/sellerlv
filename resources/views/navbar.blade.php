@@ -12,7 +12,7 @@
 
             <ul class="navbar-nav ms-auto mt-3 mt-lg-0">
                 <form class="d-flex me-5">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <input class="form-control me-2" type="search" placeholder="I'm searching for..." aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
 
