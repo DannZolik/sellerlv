@@ -87,8 +87,10 @@ class UserController extends Controller
 //        }
 
         $validated = $validator->validated();
+//        dd($validated);
 
         $affectedRows = User::where('id', $id)->update($validated);
+
         return redirect()->back();
 
 
