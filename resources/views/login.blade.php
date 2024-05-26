@@ -1,30 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Seller.lv</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+@include('header', ['pageTitle' => 'Sign in'])
 
-    <style>
-        body {
-            display: flex;
-            align-items: center;
-            padding-top: 40px;
-            padding-bottom: 40px;
-            background-color: #f5f5f5;
-        }
-        html, body {
-            height: 100%;
-        }
-    </style>
-</head>
-<body class="text-center d-flex justify-content-center align-items-center"> <!-- Добавление классов d-flex и justify-content-center -->
+<body class="text-center d-flex justify-content-center align-items-center px-3 px-sm-0"> <!-- Добавление классов d-flex и justify-content-center -->
+
+<style>
+    body {
+        display: flex;
+        align-items: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+    }
+    html, body {
+        height: 100%;
+    }
+</style>
+
 <main class="form-signin">
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
-        <img class="mb-4" src="/logo.png" alt="" width="65%">
+        <a href="{{route('home')}}"><img class="mb-4" src="/logo.png" alt="" width="65%"></a>
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
         <div class="form-floating">

@@ -21,10 +21,16 @@ class UserDataSeeder extends Seeder
         ]);
 
         UserData::create([
-            'value' => '8800553535',
+            'value' => '8 800 555 35 35',
             'isPrivate' => false,
             'userID' => 1,
             'userDataTypeID' => 2,
+        ]);
+        UserData::create([
+            'value' => 'dannzolik.tplinkdns.com',
+            'isPrivate' => false,
+            'userID' => 1,
+            'userDataTypeID' => 3,
         ]);
     }
 }

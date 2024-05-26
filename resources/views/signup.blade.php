@@ -1,47 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration | Seller.lv</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-{{--    @vite(['resources/sass/app.scss', 'resources/js/app.js'])--}}
+@include('header', ['pageTitle' => 'Sign up'])
 
-    <style>
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f5f5f5;
-        }
-        .form-signin {
-            width: 100%;
-            max-width: 330px;
-            /*padding: 15px;*/
-            /*margin: auto;*/
-        }
-        .form-signin .checkbox {
-            font-weight: 400;
-        }
-        .form-signin input[type="email"],
-        .form-signin input[type="password"] {
-            height: auto;
-            /*margin-bottom: 10px;*/
-        }
-        .form-signin input[type="email"]:focus,
-        .form-signin input[type="password"]:focus {
-            z-index: 2;
-        }
-    </style>
-</head>
-<body class="text-center">
+<style>
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #f5f5f5;
+    }
+    .form-signin {
+        width: 100%;
+        max-width: 330px;
+        /*padding: 15px;*/
+        /*margin: auto;*/
+    }
+    .form-signin .checkbox {
+        font-weight: 400;
+    }
+    .form-signin input[type="email"],
+    .form-signin input[type="password"] {
+        height: auto;
+        /*margin-bottom: 10px;*/
+    }
+    .form-signin input[type="email"]:focus,
+    .form-signin input[type="password"]:focus {
+        z-index: 2;
+    }
+</style>
+
+
+<body class="text-center px-3 px-sm-0">
 
 <main class="form-signin">
     <form method="POST" action="{{ route('signup') }}">
         @csrf
 
-        <img class="mb-4" src="/logo.png" alt="" width="100%">
+        <a href="{{route('home')}}"><img class="mb-4" src="/logo.png" alt="" width="65%"></a>
         <h1 class="h3 mb-3 fw-normal">Create an account</h1>
 
         <div class="form-floating">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserData;
 use App\Models\UserTypes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,10 +25,16 @@ class UserController extends Controller
             return redirect('/404');
         }
         $userTypes = UserTypes::all();
+
+        $queryBuilder = User::query()->with('userData.userDataType');
+
+//        dd(json_encode($queryBuilder->get()[0]->userData));
+
         return view('user_profile', [
             'user' => $user,
             'userTypes' => $userTypes,
-            'authUser' => $auth_user
+            'authUser' => $auth_user,
+            'userData' => $queryBuilder->get()[0]->userData
         ]);
 
     }
@@ -72,14 +79,19 @@ class UserController extends Controller
     }
 
     public function update(Request $request, $id){
+//        dd($request->post());
         $user = Auth::user();
         if ($user->id != $id){
             return;
         }
         $validator = Validator::make($request->all(), [
             'email'=>'required|email',
-            'userTypeID' => '',
-            'name' => 'required'
+            'name' => 'required',
+            'phone' => ['regex:/^\d+( \d+)*$/', 'nullable'],
+            'web' => '',
+            'email_private' => '',
+            'phone_private' => '',
+            'web_private' => ''
         ]);
 
 //        if ($validator->fails()) {
@@ -89,7 +101,37 @@ class UserController extends Controller
         $validated = $validator->validated();
 //        dd($validated);
 
-        $affectedRows = User::where('id', $id)->update($validated);
+        $d = UserData::query()->with('userDataType')->get();
+        $query = UserData::query()->where('userID', $id);
+        foreach ($d as $value){
+            switch ($value->userDataType['value']){
+                case 'email':
+                    UserData::query()->where('userID', $id)->where('userDataTypeID', $value->id)
+                        ->update([
+                            'value' => $validated['email'],
+                            'isPrivate' => isset($validated['email_private'])
+                        ]);
+                    break;
+                case 'phone':
+                    UserData::query()->where('userID', $id)->where('userDataTypeID', $value->id)
+                        ->update([
+                            'value' => $validated['phone'],
+                            'isPrivate' => isset($validated['phone_private'])
+                        ]);
+                    break;
+                case 'web':
+                    UserData::query()->where('userID', $id)->where('userDataTypeID', $value->id)
+                        ->update([
+                            'value' => $validated['web'],
+                            'isPrivate' => isset($validated['web_private'])
+                        ]);
+                    break;
+            }
+        }
+
+        User::where('id', $id)->update([
+            'name' => $validated['name'],
+        ]);
 
         return redirect()->back();
 

@@ -33,7 +33,7 @@ class AdvertController extends Controller
         }, 'user.userData.userDataType']);
 
 
-
+        $authUser = Auth::user();
         $allAdverts = $queryBuilder->orderBy('created_at', 'desc')->get();
         return view('advertListPage', [
             'allAdverts' => $allAdverts,
@@ -41,6 +41,7 @@ class AdvertController extends Controller
             'name' => $name,
             'from' => $from,
             'to' => $to,
+            'authUser' => $authUser
         ]);
 
     }
@@ -53,9 +54,11 @@ class AdvertController extends Controller
     public function create_index(Request $request)
     {
         $allCategories = AdvertCategory::all();
+        $authUser = Auth::user();
 
         return view('createAdvert', [
             'allCategories' => $allCategories,
+            'authUser' => $authUser
         ]);
     }
 
