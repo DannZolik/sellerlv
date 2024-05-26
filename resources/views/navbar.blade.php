@@ -20,7 +20,7 @@
                     <a class="nav-link" href="{{ route('home') }}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Post advertisement</a>
+                    <a class="nav-link" href="{{route('adverts.create')}}">Post advertisement</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Favorites</a>

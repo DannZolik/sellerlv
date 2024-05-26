@@ -17,7 +17,7 @@ return new class extends Migration
             $table->boolean('isPrivate')->nullable();
             $table->foreignId('userID')->nullable()->constrained('users')
                 ->onUpdate('cascade')->onDelete('set null');
-            $table->foreignId('userDataTypeID')->nullable()->constrained('user_types')
+            $table->foreignId('userDataTypeID')->nullable()->constrained('user_data_types')
                 ->onUpdate('cascade')->onDelete('set null');
 
             $table->timestamps();

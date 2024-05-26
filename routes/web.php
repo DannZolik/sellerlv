@@ -23,6 +23,9 @@ Route::post('/users/{id}/update', [UserController::class, 'update'])->name('user
 
 Route::get('/categories/{category}', [\App\Http\Controllers\AdvertController::class, 'index'])->name('category-show');
 
+Route::get('/adverts/create', [\App\Http\Controllers\AdvertController::class, 'create_index'])->name('adverts.create')->middleware('auth');
+Route::post('/adverts/create', [\App\Http\Controllers\AdvertController::class, 'create'])->name('adverts.post.create')->middleware('auth');
+
 //Route::get('/categories/business', [\App\Http\Controllers\AdvertController::class, 'index'])->name('category-business');
 //Route::get('/categories/transport')->name('category-transport');
 //Route::get('/categories/realestate')->name('category-realestate');

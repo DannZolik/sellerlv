@@ -79,7 +79,7 @@
                     <div class="col">
                         <div class="card h-100 d-flex flex-column card-hover" data-bs-toggle="modal" data-bs-target="#advertModal{{$advert->id}}">
                             <div class="ratio ratio-4x3">
-                                <img src="https://images.pexels.com/photos/1870376/pexels-photo-1870376.jpeg?cs=srgb&dl=pexels-larissa-barbosa-945746-1870376.jpg&fm=jpg" class="card-img-top p-1" alt="Название продукта">
+                                <img src="{{ asset($advert->image) }}" class="card-img-top p-1" alt="{{$advert->image}}">
                             </div>
 
                             <div class="card-body d-flex flex-column">
@@ -111,7 +111,7 @@
                                                     </div>
                                                     <div class="col-12 col-md-8">
                                                         <div class="ratio ratio-4x3">
-                                                            <img src="https://images.pexels.com/photos/1870376/pexels-photo-1870376.jpeg?cs=srgb&dl=pexels-larissa-barbosa-945746-1870376.jpg&fm=jpg" class="" alt="Название продукта">
+                                                            <img src="{{ asset($advert->image) }}" class="" alt="{{$advert->image}}">
                                                         </div>
                                                     </div>
                                                     <div class="col-0 col-md-2">
@@ -122,7 +122,7 @@
 
                                             </div>
                                             <div class="col-12 mt-2 mt-md-3">
-                                                <label for="product_name_{{$advert->id}}" class="h5">Name</label>
+                                                <label for="product_name_{{$advert->id}}" class="h5">Title</label>
                                                 <p class="" id="product_name_{{$advert->id}}">{{$advert->title}}</p>
 
                                                 <label for="product_description_{{$advert->id}}" class="h5">Description</label>
@@ -133,9 +133,35 @@
                                                         <p class="" id="product_price_{{$advert->id}}">€ <span class="fw-bold h3">{{$advert->price}}</span></p>
                                                     </div>
                                                     <div class="col-12 col-md-6">
-                                                        <p class="mb-1"><small class="text-muted">E-mail: danjuha1@gmail.com</small></p>
-                                                        <p class="mb-1"><small class="text-muted">Phone number: +37125533654</small></p>
-                                                        <p class="mb-1"><small class="text-muted">Web: <a href="#">www.dannzolik.com</a></small></p>
+
+                                                        @php
+                                                            $email = null;
+                                                            $phone = null;
+                                                            $web = null;
+                                                            foreach ($advert->user->userData as $userData){
+                                                                switch ($userData->userDataType['value']){
+                                                                    case 'email':
+                                                                        $email = $userData['value'];
+                                                                        break;
+                                                                    case 'phone':
+                                                                        $phone = $userData['value'];
+                                                                        break;
+                                                                    case 'web':
+                                                                        $web = $userData['value'];
+                                                                        break;
+                                                                }
+                                                            }
+                                                        @endphp
+
+                                                        @if(isset($email))
+                                                            <p class="mb-1"><small class="text-muted">E-mail: {{$email}}</small></p>
+                                                        @endif
+                                                        @if(isset($phone))
+                                                            <p class="mb-1"><small class="text-muted">Phone number: {{$phone}}</small></p>
+                                                        @endif
+                                                        @if(isset($web))
+                                                            <p class="mb-1"><small class="text-muted">Web: <a href="#">{{$web}}</a></small></p>
+                                                        @endif
                                                     </div>
                                                 </div>
 

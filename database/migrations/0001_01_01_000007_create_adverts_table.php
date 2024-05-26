@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string("title")->nullable();
             $table->decimal("price", 13, 2)->nullable();
             $table->text("description")->nullable();
+            $table->string('image')->nullable();
             $table->timestamp("activeUntil")->nullable();
             $table->char("status", 3)->nullable();
             $table->integer('views')->nullable();
