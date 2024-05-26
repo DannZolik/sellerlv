@@ -18,7 +18,18 @@ class AdvertController extends Controller
 
         $categoryID = AdvertCategory::where('route', $category)->first()->id;
 
-        $allAdverts = Advert::where('categoryID', $categoryID)->orderBy('created_at', 'desc')->get();
+        $queryBuilder = Advert::query()->where('categoryID', $categoryID);
+
+        if (!empty($name))
+            $queryBuilder->where('title', 'like', '%'.$name.'%');
+        if (!empty($from))
+            $queryBuilder->where('price', '>=', floatval($from));
+        if (!empty($to))
+            $queryBuilder->where('price', '<=', $to);
+
+
+
+        $allAdverts = $queryBuilder->orderBy('created_at', 'desc')->get();
         return view('advertListPage', [
             'allAdverts' => $allAdverts,
             'category' => $category,

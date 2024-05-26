@@ -3,11 +3,26 @@
 <style>
     .card-text {
         display: -webkit-box;
-        -webkit-line-clamp: 4; /* Количество строк */
+        -webkit-line-clamp: 4;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
     }
+    .card-title{
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .card-hover {
+        cursor: pointer;
+    }
+    a {
+        color: inherit;
+    }
+
 </style>
 
 <body>
@@ -39,7 +54,7 @@
                                value="{{$to ?? ''}}" placeholder="10000">
                     </div>
                     <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary mx-2">
+                        <button type="submit" class="btn btn-primary mx-2" style="background-color: #34c3a0; border-color:#34c3a0">
                             <i class="bi bi-funnel me-1"></i>Submit</button>
                         <button type="reset" class="btn btn-secondary mx-2" id="resetFilters">
                             <i class="bi bi-arrow-repeat me-1"></i>Cancel</button>
@@ -51,30 +66,90 @@
 
 <!-- Main layout-->
 <div class="content ms-0">
-    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+    <button class="btn btn-primary" style="background-color: #34c3a0; border-color:#34c3a0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
         Filters
     </button>
     <!-- Main content -->
     <div class="container mt-2 pt-2">
 
         <!-- Page content -->
-        <div class="content flex-grow-1 ms-3 p-3">
-            <div class="row mt-1 row-cols-1 row-cols-sm-3 row-cols-md-4 g-3">
+        <div class="content flex-grow-1 ms-0 p-3">
+            <div class="row mt-1 row-cols-2 row-cols-sm-3 row-cols-md-5 g-3">
                 @foreach($allAdverts as $advert)
                     <div class="col">
-                        <div class="card">
-                            <img src="https://via.placeholder.com/150" class="card-img-top" alt="Название продукта">
-                            <div class="card-body">
-                                <h5 class="card-title">{{$advert->title}}</h5>
+                        <div class="card h-100 d-flex flex-column card-hover" data-bs-toggle="modal" data-bs-target="#advertModal{{$advert->id}}">
+                            <div class="ratio ratio-4x3">
+                                <img src="https://images.pexels.com/photos/1870376/pexels-photo-1870376.jpeg?cs=srgb&dl=pexels-larissa-barbosa-945746-1870376.jpg&fm=jpg" class="card-img-top p-1" alt="Название продукта">
+                            </div>
 
-                                <p class="card-text">ed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
-                                <p class="card-text">$10.00</p>
-                                <p class="card-text"><small class="text-muted">{{date("Y-m-d", strtotime($advert->created_at))}}</small></p>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">{{$advert->title}}</h5>
+                                <p class="card-text">{{$advert->description}}</p>
+                                <div class="mt-auto">
+                                    <p class="card-text">€ <span class="fw-bold">{{$advert->price}}</span></p>
+                                    <p class="card-text"><small class="text-muted">{{date("Y-m-d", strtotime($advert->created_at))}}</small></p>
+                                </div>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Modal -->
+                    <div class="modal fade" id="advertModal{{$advert->id}}" tabindex="-1" aria-labelledby="advertModalLabel{{$advert->id}}" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="advertModalLabel{{$advert->id}}">{{$advert->title}}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-0 col-md-2">
 
+                                                    </div>
+                                                    <div class="col-12 col-md-8">
+                                                        <div class="ratio ratio-4x3">
+                                                            <img src="https://images.pexels.com/photos/1870376/pexels-photo-1870376.jpeg?cs=srgb&dl=pexels-larissa-barbosa-945746-1870376.jpg&fm=jpg" class="" alt="Название продукта">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-0 col-md-2">
+
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="col-12 mt-2 mt-md-3">
+                                                <label for="product_name_{{$advert->id}}" class="h5">Name</label>
+                                                <p class="" id="product_name_{{$advert->id}}">{{$advert->title}}</p>
+
+                                                <label for="product_description_{{$advert->id}}" class="h5">Description</label>
+                                                <p class="" id="product_description_{{$advert->id}}">{{$advert->description}}</p>
+                                                <div class="row">
+                                                    <div class="col-12 col-md-6">
+                                                        <label for="product_price_{{$advert->id}}" class="h5">Price</label>
+                                                        <p class="" id="product_price_{{$advert->id}}">€ <span class="fw-bold h3">{{$advert->price}}</span></p>
+                                                    </div>
+                                                    <div class="col-12 col-md-6">
+                                                        <p class="mb-1"><small class="text-muted">E-mail: danjuha1@gmail.com</small></p>
+                                                        <p class="mb-1"><small class="text-muted">Phone number: +37125533654</small></p>
+                                                        <p class="mb-1"><small class="text-muted">Web: <a href="#">www.dannzolik.com</a></small></p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" style="background-color: #34c3a0; border-color:#34c3a0" data-bs-dismiss="modal"><i class="bi bi-heart-fill me-1"></i>Add to favourite</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 @endforeach
 
             </div>
