@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Advert;
 use App\Models\AdvertCategory;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class AdvertController extends Controller
 {
@@ -96,11 +98,59 @@ class AdvertController extends Controller
         return redirect()->route('adverts.create')->with('status', 'Created...');
     }
 
-    public function update(Request $request){
+    public function update(Request $request, $id){
+
+        $authUser = Auth::user();
+        $advert = Advert::find($id);
+
+        if ($authUser['id'] !== $advert['userID']){
+            return;
+        }
+
+        $validatedData = $request->validate([
+            'image' => 'image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'title' => 'required',
+            'description' => 'required',
+            'categoryID' => 'required',
+            'price' => 'required',
+
+        ]);
+
+        if (isset($validatedData['image'])){
+            $name = $request->file('image')->getClientOriginalName();
+
+            $path = $request->file('image')->store('public/images');
+
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+            $advert->image = 'images/'.$imageName;
+        }
+
+        $advert->title = $validatedData['title'];
+        $advert->description = $validatedData['description'];
+        $advert->categoryID = $validatedData['categoryID'];
+        $advert->price = $validatedData['price'];
+
+        $advert->save();
+
+        Session::flash('success', 'Advert was edited successfully!');
+
+        return redirect()->back();
+
+
 
     }
 
-    public function delete(Request $request){
+    public function delete(Request $request, $id){
+        $authUser = Auth::user();
+        $advert = Advert::find($id);
+
+        if ($authUser['id'] !== $advert['userID']){
+            return;
+        }
+        Advert::destroy($id);
+        Session::flash('success', 'Advert was deleted successfully!');
+        return redirect()->back();
 
     }
 

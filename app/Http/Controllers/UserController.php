@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Advert;
+use App\Models\AdvertCategory;
 use App\Models\User;
 use App\Models\UserData;
 use App\Models\UserTypes;
@@ -33,6 +34,8 @@ class UserController extends Controller
 
         $userAdverts = Advert::query()->where('userID', $id)->get();
 
+        $allCategories = AdvertCategory::all();
+
 
 //        dd(json_encode($queryBuilder->get()[0]->userData));
 
@@ -41,7 +44,8 @@ class UserController extends Controller
             'userTypes' => $userTypes,
             'authUser' => $auth_user,
             'userData' => $userData,
-            'userAdverts' => $userAdverts
+            'userAdverts' => $userAdverts,
+            'allCategories' => $allCategories
         ]);
 
     }

@@ -14,7 +14,14 @@
 
 @include('navbar')
 
-<div class="content mt-5 ms-0">
+<div class="content mt-2 ms-0">
+    @if(Session::has('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ Session::get('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <!-- Main content -->
     <div class="container mt-0">
         <div class="row">
@@ -88,10 +95,10 @@
                                                         </div>
                                                         <div class="card-footer mt-auto p-1">
                                                             <div class="d-flex">
-                                                                <button class="btn btn-sm btn-danger flex-grow-1 me-1">
+                                                                <button class="btn btn-sm btn-danger flex-grow-1 me-1" data-bs-toggle="modal" data-bs-target="#deleteModal{{$advert->id}}">
                                                                     <i class="bi bi-trash"></i>
                                                                 </button>
-                                                                <button class="btn btn-sm btn-warning flex-grow-1 ms-1">
+                                                                <button class="btn btn-sm btn-warning flex-grow-1 ms-1" data-bs-toggle="modal" data-bs-target="#updateModal{{$advert->id}}">
                                                                     <i class="bi bi-pencil"></i>
                                                                 </button>
                                                             </div>
@@ -113,6 +120,174 @@
                         </div>
 
                         @foreach($userAdverts as $advert)
+                            <div class="modal fade" id="updateModal{{$advert->id}}" tabindex="-1" aria-labelledby="updateModalLabel{{$advert->id}}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="updateModalLabel{{$advert->id}}">Update Advertisement</h5>
+                                            <button type="button" class="btn-close" id="closeChanges{!! $advert->id !!}" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="panel panel-primary card mt-5">
+
+                                                <div class="panel-body card-body">
+                                                    <form method="POST" enctype="multipart/form-data" id="upload-image" action="{{ route('adverts.post.update', $advert->id) }}" >
+                                                        @csrf
+                                                        <div class="mb-3">
+                                                            <label for="categoryID" class="form-label">Category</label>
+                                                            <select class="form-select" name="categoryID" id="categoryID{{$advert->id}}">
+                                                                <option value=""></option>
+                                                                @foreach($allCategories as $value)
+                                                                    <option value="{{$value['id']}}" {{ ($advert['categoryID'] ?? null) == $value['id'] ? 'selected' : '' }}>{{$value['value']}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="title" class="form-label">Title</label>
+                                                            <input type="text" class="form-control" id="title{{$advert->id}}" name="title" placeholder="Enter title" value="{{ $advert['title'] ?? ''}}">
+                                                            @error('title')
+                                                            <div class="alert alert-danger mt-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="description" class="form-label">Description</label>
+                                                            <textarea class="form-control" id="description{{$advert->id}}" name="description" rows="3" placeholder="Enter description">{{ $advert['description'] ?? '' }}</textarea>
+                                                            @error('description')
+                                                            <div class="alert alert-danger mt-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="price" class="form-label">Price</label>
+                                                            <input type="text" class="form-control" step="0.01" min="0" id="price{{$advert->id}}" name="price" placeholder="Enter price" value="{{ $advert['price'] ?? '' }}">
+                                                            @error('price')
+                                                            <div class="alert alert-danger mt-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+                                                        <div class="mb-3">
+
+                                                            <label for="product_image" class="h5">Image</label>
+                                                            <div class="ratio ratio-4x3" id="edit_advert_ratio{!! $advert->id !!}">
+                                                                <img src="{{ asset($advert->image) }}" class="card-img-top p-1" alt="{{$advert->image}}">
+                                                            </div>
+                                                            <input type="file" name="image" id="product_image{!! $advert->id !!}" accept="image/*" placeholder="Choose image">
+                                                            @error('image')
+                                                            <div class="alert alert-danger mt-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+                                                        <script>
+                                                            document.addEventListener("DOMContentLoaded", function() {
+                                                                var imageInput{!! $advert->id !!} = document.getElementById("product_image{!! $advert->id !!}");
+                                                                var ratioDiv{!! $advert->id !!} = document.getElementById("edit_advert_ratio{!! $advert->id !!}");
+
+                                                                imageInput{!! $advert->id !!}.addEventListener("change", function() {
+                                                                    if (imageInput{!! $advert->id !!}.files.length > 0) {
+                                                                        // Если выбран файл, скрыть div
+                                                                        ratioDiv{!! $advert->id !!}.style.display = "none";
+                                                                    } else {
+                                                                        // Если файл не выбран, показать div
+                                                                        ratioDiv{!! $advert->id !!}.style.display = "block";
+                                                                    }
+                                                                });
+                                                            });
+                                                        </script>
+
+
+                                                        <button type="submit" class="btn btn-primary" style="background-color: #34c3a0; border-color:#34c3a0" >Submit</button>
+                                                    </form>
+                                                </div>
+
+
+
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" id="resetChanges{!! $advert->id !!}" data-bs-dismiss="modal">No</button>
+                                            <script>
+                                                document.getElementById('resetChanges{!! $advert->id !!}').addEventListener('click', function() {
+                                                    // Reset form fields
+                                                    document.getElementById('title{{$advert->id}}').value = '{{$advert->title}}';
+                                                    document.getElementById('description{{$advert->id}}').value = '{!! $advert->description !!}';
+                                                    document.getElementById('price{{$advert->id}}').value = {{$advert->price}};
+                                                    document.getElementById('categoryID{{$advert->id}}').value = {{$advert->categoryID}};
+                                                    document.getElementById('product_image{{$advert->id}}').value = '';
+                                                    var ratioDiv{!! $advert->id !!} = document.getElementById("edit_advert_ratio{!! $advert->id !!}");
+                                                    ratioDiv{!! $advert->id !!}.style.display = "block";
+                                                });
+                                                document.getElementById('closeChanges{!! $advert->id !!}').addEventListener('click', function() {
+                                                    // Reset form fields
+                                                    document.getElementById('title{{$advert->id}}').value = '{{$advert->title}}';
+                                                    document.getElementById('description{{$advert->id}}').value = '{!! $advert->description !!}';
+                                                    document.getElementById('price{{$advert->id}}').value = {{$advert->price}};
+                                                    document.getElementById('categoryID{{$advert->id}}').value = {{$advert->categoryID}};
+                                                    document.getElementById('product_image{{$advert->id}}').value = '';
+                                                    var ratioDiv{!! $advert->id !!} = document.getElementById("edit_advert_ratio{!! $advert->id !!}");
+                                                    ratioDiv{!! $advert->id !!}.style.display = "block";
+                                                });
+                                            </script>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="deleteModal{{$advert->id}}" tabindex="-1" aria-labelledby="deleteModalLabel{{$advert->id}}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteModalLabel{{$advert->id}}">Delete Advertisement</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to delete this advertisement?
+                                        </div>
+                                        <div class="modal-footer">
+                                  <div class="modal fade" id="deleteModal{{$advert->id}}" tabindex="-1" aria-labelledby="deleteModalLabel{{$advert->id}}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteModalLabel{{$advert->id}}">Delete Advertisement</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to delete this advertisement?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                            <form method="GET" enctype="multipart/form-data" id="delete-advert" action="{{ route('adverts.get.delete', $advert->id) }}">
+                                                @csrf
+                                                <button type="submit" class="btn btn-danger">Yes</button>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>              <button type="submit" class="btn btn-danger">Yes</button>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="deleteModal{{$advert->id}}" tabindex="-1" aria-labelledby="deleteModalLabel{{$advert->id}}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteModalLabel{{$advert->id}}">Delete Advertisement</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to delete this advertisement?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                            <form method="GET" enctype="multipart/form-data" id="delete-advert" action="{{ route('adverts.get.delete', $advert->id) }}">
+                                                @csrf
+                                                <button type="submit" class="btn btn-danger">Yes</button>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="modal fade" id="advertModal{{$advert->id}}" tabindex="-1" aria-labelledby="advertModalLabel{{$advert->id}}" aria-hidden="true">
                                 <div class="modal-dialog modal-lg modal-dialog-scrollable">
                                     <div class="modal-content">

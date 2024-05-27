@@ -29,15 +29,6 @@
         </div>
         <div class="collapse navbar-collapse me-5" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-{{--                <li class="nav-item">--}}
-{{--                    <a class="nav-link" href="{{ route('home') }}">Home</a>--}}
-{{--                </li>--}}
-{{--                <li class="nav-item">--}}
-{{--                    <a class="nav-link" href="#">Post advertisement</a>--}}
-{{--                </li>--}}
-{{--                <li class="nav-item">--}}
-{{--                    <a class="nav-link" href="#">Favorites</a>--}}
-{{--                </li>--}}
                 <li class="nav-item">
                     <div class="dropdown dropstart">
                         <button class="btn dropdown-toggle" type="button" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
