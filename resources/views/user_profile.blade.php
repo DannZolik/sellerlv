@@ -1,61 +1,18 @@
-{{--<!DOCTYPE html>--}}
-{{--<html lang="en">--}}
-
-{{--<head>--}}
-{{--    <meta charset="UTF-8">--}}
-{{--    <meta name="viewport" content="width=device-width, initial-scale=1.0">--}}
-{{--    <title>User Profile | Seller.lv</title>--}}
-{{--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">--}}
-{{--    @vite(['resources/sass/app.scss', 'resources/js/app.js'])--}}
-{{--    <style>--}}
-{{--        /* Add your custom styles here */--}}
-{{--        /* Sidebar */--}}
-{{--        .sidebar {--}}
-{{--            position: fixed;--}}
-{{--            top: 0;--}}
-{{--            bottom: 0;--}}
-{{--            left: 0;--}}
-{{--            z-index: 100;--}}
-{{--            padding: 48px 0;--}}
-{{--            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);--}}
-{{--            background-color: #f8f9fa;--}}
-{{--        }--}}
-{{--        /* Content */--}}
-{{--        .content {--}}
-{{--            margin-left: 250px; /* Width of sidebar */--}}
-{{--            padding: 20px;--}}
-{{--        }--}}
-{{--    </style>--}}
-{{--</head>--}}
-
 @include('header', ['pageTitle' => 'User Profile | Seller.lv'])
+
+<style>
+    .btn-orange {
+        background-color: #f97316; /* Assuming $orange-500 is this color */
+        color: white;
+    }
+    .btn-orange:hover {
+        background-color: #ea580c; /* Darker shade for hover */
+    }
+</style>
 
 <body>
 
 @include('navbar')
-
-
-
-{{--<!-- Sidebar -->--}}
-{{--<div class="sidebar">--}}
-{{--    <div class="container">--}}
-{{--        <!-- Sidebar links -->--}}
-{{--        <ul class="nav flex-column">--}}
-{{--            <li class="nav-item">--}}
-{{--                <a class="nav-link" href="#">Home</a>--}}
-{{--            </li>--}}
-{{--            <li class="nav-item">--}}
-{{--                <a class="nav-link" href="#">Products</a>--}}
-{{--            </li>--}}
-{{--            <li class="nav-item">--}}
-{{--                <a class="nav-link" href="#">Categories</a>--}}
-{{--            </li>--}}
-{{--            <li class="nav-item">--}}
-{{--                <a class="nav-link" href="#">Contact</a>--}}
-{{--            </li>--}}
-{{--        </ul>--}}
-{{--    </div>--}}
-{{--</div>--}}
 
 <div class="content mt-5 ms-0">
     <!-- Main content -->
@@ -64,7 +21,6 @@
             <div class="col-md-6 offset-md-3">
                 <div class="card">
                     <div class="card-body">
-{{--                        {{json_encode($userData)}}--}}
                         @php
                             $email = null;
                             $email_private = null;
@@ -90,7 +46,152 @@
                                 }
                             }
                         @endphp
-                        <h5 class="card-title">User Profile</h5>
+                        <div class="row">
+                            <div class="col-6">
+                                <h5 class="card-title">User Profile</h5>
+                            </div>
+                            <div class="col-6 text-end">
+                                <button class="btn btn-primary" style="background-color: #34c3a0; border-color:#34c3a0" data-bs-toggle="modal" data-bs-target="#myAdvertsModal">
+                                    My adverts</button>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="myAdvertsModal" tabindex="-1" aria-labelledby="myAdvertsModal" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="myAdvertsModalLabel">My adverts</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#myAdvertsModal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row mt-1 row-cols-2 row-cols-sm-3 row-cols-md-5 g-3">
+                                            @foreach($userAdverts as $advert)
+                                                <div class="col">
+                                                    <div class="card h-100 d-flex flex-column card-hover">
+                                                        <div data-bs-toggle="modal" data-bs-target="#advertModal{{$advert->id}}">
+                                                            <div class="ratio ratio-4x3">
+                                                                <img src="{{ asset($advert->image) }}" class="card-img-top p-1" alt="{{$advert->image}}">
+                                                            </div>
+
+                                                            <div class="card-body d-flex flex-column">
+                                                                <h5 class="card-title">{{$advert->title}}</h5>
+                                                                <p class="card-text">{{$advert->description}}</p>
+                                                                <div class="mt-auto">
+                                                                    <p class="card-text">€ <span class="fw-bold">{{$advert->price}}</span></p>
+                                                                    <p class="card-text"><small class="text-muted">{{date("Y-m-d", strtotime($advert->created_at))}}</small></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer mt-auto p-1">
+                                                            <div class="d-flex">
+                                                                <button class="btn btn-sm btn-danger flex-grow-1 me-1">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </button>
+                                                                <button class="btn btn-sm btn-warning flex-grow-1 ms-1">
+                                                                    <i class="bi bi-pencil"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="advertModal{{$advert->id}}" tabindex="-1" aria-labelledby="advertModalLabel{{$advert->id}}" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="advertModalLabel{{$advert->id}}">{{$advert->title}}</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#advertModal{{$advert->id}}" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="container-fluid">
+                                                                    <div class="row">
+                                                                        <div class="col-12">
+                                                                            <div class="row">
+                                                                                <div class="col-0 col-md-2">
+
+                                                                                </div>
+                                                                                <div class="col-12 col-md-8">
+                                                                                    <div class="ratio ratio-4x3">
+                                                                                        <img src="{{ asset($advert->image) }}" class="" alt="{{$advert->image}}">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-0 col-md-2">
+
+                                                                                </div>
+                                                                            </div>
+
+
+                                                                        </div>
+                                                                        <div class="col-12 mt-2 mt-md-3">
+                                                                            <label for="product_name_{{$advert->id}}" class="h5">Title</label>
+                                                                            <p class="" id="product_name_{{$advert->id}}">{{$advert->title}}</p>
+
+                                                                            <label for="product_description_{{$advert->id}}" class="h5">Description</label>
+                                                                            <p class="" id="product_description_{{$advert->id}}">{{$advert->description}}</p>
+                                                                            <div class="row">
+                                                                                <div class="col-12 col-md-6">
+                                                                                    <label for="product_price_{{$advert->id}}" class="h5">Price</label>
+                                                                                    <p class="" id="product_price_{{$advert->id}}">€ <span class="fw-bold h3">{{$advert->price}}</span></p>
+                                                                                </div>
+                                                                                <div class="col-12 col-md-6">
+
+                                                                                    @php
+                                                                                        $email = null;
+                                                                                        $phone = null;
+                                                                                        $web = null;
+                                                                                        foreach ($advert->user->userData as $userData){
+                                                                                            switch ($userData->userDataType['value']){
+                                                                                                case 'email':
+                                                                                                    $email = $userData['value'];
+                                                                                                    break;
+                                                                                                case 'phone':
+                                                                                                    $phone = $userData['value'];
+                                                                                                    break;
+                                                                                                case 'web':
+                                                                                                    $web = $userData['value'];
+                                                                                                    break;
+                                                                                            }
+                                                                                        }
+                                                                                    @endphp
+
+                                                                                    @if(isset($email))
+                                                                                        <p class="mb-1"><small class="text-muted">E-mail: {{$email}}</small></p>
+                                                                                    @endif
+                                                                                    @if(isset($phone))
+                                                                                        <p class="mb-1"><small class="text-muted">Phone number: {{$phone}}</small></p>
+                                                                                    @endif
+                                                                                    @if(isset($web))
+                                                                                        <p class="mb-1"><small class="text-muted">Web: <a href="#">{{$web}}</a></small></p>
+                                                                                    @endif
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-primary" style="background-color: #34c3a0; border-color:#34c3a0" data-bs-dismiss="modal"><i class="bi bi-heart-fill me-1"></i>Add to favourite</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button  type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <form method="POST" action="{{ route('users.update', $user['id'] ?? 0) }}">
                             @csrf
                             <div class="mb-3">
@@ -127,7 +228,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="submit" class="btn btn-primary" style="background-color: #34c3a0; border-color:#34c3a0">Save Changes</button>
                         </form>
 
 

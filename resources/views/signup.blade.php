@@ -78,7 +78,7 @@
             @enderror
         </div>
 
-        <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Sign up</button>
+        <button class="w-100 btn btn-lg btn-primary mt-3" type="submit" style="background-color: #34c3a0; border-color:#34c3a0">Sign up</button>
 
         <div class="mt-3">
             <p>Already have an account? <a href="{{ route('login') }}">Sign in</a></p>

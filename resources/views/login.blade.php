@@ -42,7 +42,7 @@
                 <input type="checkbox" value="remember-me" name="remember" id="remember"> Remember me
             </label>
         </div>
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+        <button class="w-100 btn btn-lg btn-primary" type="submit" style="background-color: #34c3a0; border-color:#34c3a0">Sign in</button>
 
         <div class="text-center mt-3">
             <p>Not a member? <a href="{{ route('signup') }}">Register</a></p>

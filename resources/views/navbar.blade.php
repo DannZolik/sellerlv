@@ -63,7 +63,7 @@
                             @else
                                 <li>
                                     <div class="" role="group" aria-label="Login and Signup Buttons">
-                                        <a href="{{ route('login') }}" class="btn btn-primary w-100 mb-2">
+                                        <a href="{{ route('login') }}" class="btn btn-primary w-100 mb-2" style="background-color: #34c3a0; border-color:#34c3a0">
                                             {{ __('Login') }}
                                         </a>
                                         <a href="{{ route('signup') }}" class="btn btn-outline-secondary w-100">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Advert;
 use App\Models\User;
 use App\Models\UserData;
 use App\Models\UserTypes;
@@ -28,13 +29,19 @@ class UserController extends Controller
 
         $queryBuilder = User::query()->with('userData.userDataType');
 
+        $userData = $queryBuilder->get()[0]->userData;
+
+        $userAdverts = Advert::query()->where('userID', $id)->get();
+
+
 //        dd(json_encode($queryBuilder->get()[0]->userData));
 
         return view('user_profile', [
             'user' => $user,
             'userTypes' => $userTypes,
             'authUser' => $auth_user,
-            'userData' => $queryBuilder->get()[0]->userData
+            'userData' => $userData,
+            'userAdverts' => $userAdverts
         ]);
 
     }
