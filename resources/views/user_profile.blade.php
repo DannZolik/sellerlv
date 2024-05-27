@@ -50,6 +50,7 @@
                             <div class="col-6">
                                 <h5 class="card-title">User Profile</h5>
                             </div>
+
                             <div class="col-6 text-end">
                                 <button class="btn btn-primary" style="background-color: #34c3a0; border-color:#34c3a0" data-bs-toggle="modal" data-bs-target="#myAdvertsModal">
                                     My adverts</button>
@@ -100,88 +101,7 @@
                                                 </div>
 
                                                 <!-- Modal -->
-                                                <div class="modal fade" id="advertModal{{$advert->id}}" tabindex="-1" aria-labelledby="advertModalLabel{{$advert->id}}" aria-hidden="true">
-                                                    <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="advertModalLabel{{$advert->id}}">{{$advert->title}}</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#advertModal{{$advert->id}}" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="container-fluid">
-                                                                    <div class="row">
-                                                                        <div class="col-12">
-                                                                            <div class="row">
-                                                                                <div class="col-0 col-md-2">
 
-                                                                                </div>
-                                                                                <div class="col-12 col-md-8">
-                                                                                    <div class="ratio ratio-4x3">
-                                                                                        <img src="{{ asset($advert->image) }}" class="" alt="{{$advert->image}}">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-0 col-md-2">
-
-                                                                                </div>
-                                                                            </div>
-
-
-                                                                        </div>
-                                                                        <div class="col-12 mt-2 mt-md-3">
-                                                                            <label for="product_name_{{$advert->id}}" class="h5">Title</label>
-                                                                            <p class="" id="product_name_{{$advert->id}}">{{$advert->title}}</p>
-
-                                                                            <label for="product_description_{{$advert->id}}" class="h5">Description</label>
-                                                                            <p class="" id="product_description_{{$advert->id}}">{{$advert->description}}</p>
-                                                                            <div class="row">
-                                                                                <div class="col-12 col-md-6">
-                                                                                    <label for="product_price_{{$advert->id}}" class="h5">Price</label>
-                                                                                    <p class="" id="product_price_{{$advert->id}}">€ <span class="fw-bold h3">{{$advert->price}}</span></p>
-                                                                                </div>
-                                                                                <div class="col-12 col-md-6">
-
-                                                                                    @php
-                                                                                        $email = null;
-                                                                                        $phone = null;
-                                                                                        $web = null;
-                                                                                        foreach ($advert->user->userData as $userData){
-                                                                                            switch ($userData->userDataType['value']){
-                                                                                                case 'email':
-                                                                                                    $email = $userData['value'];
-                                                                                                    break;
-                                                                                                case 'phone':
-                                                                                                    $phone = $userData['value'];
-                                                                                                    break;
-                                                                                                case 'web':
-                                                                                                    $web = $userData['value'];
-                                                                                                    break;
-                                                                                            }
-                                                                                        }
-                                                                                    @endphp
-
-                                                                                    @if(isset($email))
-                                                                                        <p class="mb-1"><small class="text-muted">E-mail: {{$email}}</small></p>
-                                                                                    @endif
-                                                                                    @if(isset($phone))
-                                                                                        <p class="mb-1"><small class="text-muted">Phone number: {{$phone}}</small></p>
-                                                                                    @endif
-                                                                                    @if(isset($web))
-                                                                                        <p class="mb-1"><small class="text-muted">Web: <a href="#">{{$web}}</a></small></p>
-                                                                                    @endif
-                                                                                </div>
-                                                                            </div>
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                <button type="button" class="btn btn-primary" style="background-color: #34c3a0; border-color:#34c3a0" data-bs-dismiss="modal"><i class="bi bi-heart-fill me-1"></i>Add to favourite</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             @endforeach
                                         </div>
                                     </div>
@@ -191,6 +111,90 @@
                                 </div>
                             </div>
                         </div>
+
+                        @foreach($userAdverts as $advert)
+                            <div class="modal fade" id="advertModal{{$advert->id}}" tabindex="-1" aria-labelledby="advertModalLabel{{$advert->id}}" aria-hidden="true">
+                                <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="advertModalLabel{{$advert->id}}">{{$advert->title}}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#advertModal{{$advert->id}}" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="row">
+                                                            <div class="col-0 col-md-2">
+
+                                                            </div>
+                                                            <div class="col-12 col-md-8">
+                                                                <div class="ratio ratio-4x3">
+                                                                    <img src="{{ asset($advert->image) }}" class="" alt="{{$advert->image}}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-0 col-md-2">
+
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                    <div class="col-12 mt-2 mt-md-3">
+                                                        <label for="product_name_{{$advert->id}}" class="h5">Title</label>
+                                                        <p class="" id="product_name_{{$advert->id}}">{{$advert->title}}</p>
+
+                                                        <label for="product_description_{{$advert->id}}" class="h5">Description</label>
+                                                        <p class="" id="product_description_{{$advert->id}}">{{$advert->description}}</p>
+                                                        <div class="row">
+                                                            <div class="col-12 col-md-6">
+                                                                <label for="product_price_{{$advert->id}}" class="h5">Price</label>
+                                                                <p class="" id="product_price_{{$advert->id}}">€ <span class="fw-bold h3">{{$advert->price}}</span></p>
+                                                            </div>
+                                                            <div class="col-12 col-md-6">
+
+                                                                @php
+                                                                    $email = null;
+                                                                    $phone = null;
+                                                                    $web = null;
+                                                                    foreach ($advert->user->userData as $userData){
+                                                                        switch ($userData->userDataType['value']){
+                                                                            case 'email':
+                                                                                $email = $userData['value'];
+                                                                                break;
+                                                                            case 'phone':
+                                                                                $phone = $userData['value'];
+                                                                                break;
+                                                                            case 'web':
+                                                                                $web = $userData['value'];
+                                                                                break;
+                                                                        }
+                                                                    }
+                                                                @endphp
+
+                                                                @if(isset($email))
+                                                                    <p class="mb-1"><small class="text-muted">E-mail: {{$email}}</small></p>
+                                                                @endif
+                                                                @if(isset($phone))
+                                                                    <p class="mb-1"><small class="text-muted">Phone number: {{$phone}}</small></p>
+                                                                @endif
+                                                                @if(isset($web))
+                                                                    <p class="mb-1"><small class="text-muted">Web: <a href="#">{{$web}}</a></small></p>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
 
                         <form method="POST" action="{{ route('users.update', $user['id'] ?? 0) }}">
                             @csrf
