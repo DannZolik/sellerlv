@@ -6,6 +6,7 @@ use App\Models\Advert;
 use App\Models\AdvertCategory;
 use App\Models\User;
 use App\Models\UserData;
+use App\Models\UserDataType;
 use App\Models\UserTypes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,9 +29,11 @@ class UserController extends Controller
         }
         $userTypes = UserTypes::all();
 
-        $queryBuilder = User::query()->with('userData.userDataType');
+        $queryBuilder = User::query()->where('id', $id)->with('userData.userDataType');
 
+//        dd(json_encode($queryBuilder->get()));
         $userData = $queryBuilder->get()[0]->userData;
+
 
         $userAdverts = Advert::query()->where('userID', $id)->get();
 
@@ -69,8 +72,22 @@ class UserController extends Controller
     }
 
     public function create(Request $request){
-        $validator = Validator::make($request->all(), ['email'=>'required|email|unique:App\Models\User,email',
-            'password'=>'required', 'name' => 'required', 'password_confirmation' => 'required|same:password' ]);
+        $validator = Validator::make($request->all(), [
+            'email' => [
+                'required',
+                'email',
+                'unique:App\Models\User,email',
+                function ($attribute, $value, $fail) {
+                    if (UserData::where('value', $value)->exists()) {
+                        $fail('The ' . $attribute . ' has already been taken.');
+                    }
+                },
+            ],
+            'password' => 'required',
+            'name' => 'required',
+            'password_confirmation' => 'required|same:password'
+        ]);
+
         if ($validator->fails()) {
             return back()->withErrors($validator->errors())->withInput();
         }
@@ -82,6 +99,13 @@ class UserController extends Controller
         $user->email = $validated['email'];
         $user->password = $validated['password'];
         $user->save();
+
+        UserData::create([
+            'value' => $user->email,
+            'isPrivate' => false,
+            'userID' => $user->id,
+            'userDataTypeID' => UserDataType::query()->where('value', 'email')->first()->id,
+        ]);
 
         Auth::login($user);
 
@@ -96,7 +120,20 @@ class UserController extends Controller
             return;
         }
         $validator = Validator::make($request->all(), [
-            'email'=>'required|email',
+            'email' => [
+                'required',
+                'email',
+                function ($attribute, $value, $fail) use($id){
+                    $emailID = UserDataType::query()->where('value', 'email')->first()->id;
+                    if (UserData::query()->where('userID', $id)->where('value', $value)
+                        ->where('userDataTypeID',$emailID)->exists()){
+                        return;
+                    }
+                    if (UserData::where('value', $value)->exists()) {
+                        $fail('The ' . $attribute . ' has already been taken.');
+                    }
+                },
+            ],
             'name' => 'required',
             'phone' => ['regex:/^\d+( \d+)*$/', 'nullable'],
             'web' => '',
@@ -105,12 +142,7 @@ class UserController extends Controller
             'web_private' => ''
         ]);
 
-//        if ($validator->fails()) {
-//            return response()->json(['errors' => $validator->errors()], 422);
-//        }
-
         $validated = $validator->validated();
-//        dd($validated);
 
         $d = UserData::query()->with('userDataType')->get();
         $query = UserData::query()->where('userID', $id);

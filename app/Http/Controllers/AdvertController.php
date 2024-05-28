@@ -14,7 +14,6 @@ class AdvertController extends Controller
     //
 
     public function index(Request $request, $category){
-//        dd($request->input());
         $name = $request->input("name");
         $from = $request->input("from");
         $to = $request->input("to");
@@ -67,7 +66,6 @@ class AdvertController extends Controller
     public function create(Request $request){
 
         $user = Auth::user();
-//        dd(request()->all());
         $validatedData = $request->validate([
             'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'title' => 'required',
@@ -136,9 +134,6 @@ class AdvertController extends Controller
         Session::flash('success', 'Advert was edited successfully!');
 
         return redirect()->back();
-
-
-
     }
 
     public function delete(Request $request, $id){

@@ -21,6 +21,15 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
     <!-- Main content -->
     <div class="container mt-0">
@@ -224,44 +233,6 @@
                                                     ratioDiv{!! $advert->id !!}.style.display = "block";
                                                 });
                                             </script>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal fade" id="deleteModal{{$advert->id}}" tabindex="-1" aria-labelledby="deleteModalLabel{{$advert->id}}" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="deleteModalLabel{{$advert->id}}">Delete Advertisement</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Are you sure you want to delete this advertisement?
-                                        </div>
-                                        <div class="modal-footer">
-                                  <div class="modal fade" id="deleteModal{{$advert->id}}" tabindex="-1" aria-labelledby="deleteModalLabel{{$advert->id}}" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="deleteModalLabel{{$advert->id}}">Delete Advertisement</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Are you sure you want to delete this advertisement?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                                            <form method="GET" enctype="multipart/form-data" id="delete-advert" action="{{ route('adverts.get.delete', $advert->id) }}">
-                                                @csrf
-                                                <button type="submit" class="btn btn-danger">Yes</button>
-                                            </form>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>              <button type="submit" class="btn btn-danger">Yes</button>
-                                            </form>
 
                                         </div>
                                     </div>
