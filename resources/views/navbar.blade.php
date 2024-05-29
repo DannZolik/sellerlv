@@ -70,7 +70,7 @@
         </div>
     </div>
 </nav>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="visibility: hidden;">
     <div class="container-fluid ms-1">
         <!-- Logo -->
         <a class="navbar-brand" href="{{ route('home') }}"><img src="/logo.png" alt="Logo" height="30"></a>

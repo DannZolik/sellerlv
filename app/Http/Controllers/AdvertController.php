@@ -71,7 +71,7 @@ class AdvertController extends Controller
             'title' => 'required',
             'description' => 'required',
             'categoryID' => 'required',
-            'price' => 'required',
+            'price' => 'required|numeric',
 
         ]);
         $name = $request->file('image')->getClientOriginalName();
