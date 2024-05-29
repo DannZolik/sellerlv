@@ -6,6 +6,18 @@
 
 Seller.lv is a classifieds platform designed for businesses and individuals to post and browse listings. The project leverages modern web technologies to provide a robust and efficient user experience.
 
+## Technologies Used
+- Laravel 11: A PHP framework for web artisans.
+- MySQL: An open-source relational database management system.
+- Composer: A dependency manager for PHP.
+
+## Prerequisites
+Make sure you have the following software installed:
+
+- PHP 8.1 or higher
+- Composer
+- MySQL
+- Git
 
 ## Run Locally
 
