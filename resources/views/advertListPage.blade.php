@@ -70,10 +70,10 @@
         Filters
     </button>
     <!-- Main content -->
-    <div class="container mt-2 pt-2">
+    <div class="container mt-2 pt-2 px-0">
 
         <!-- Page content -->
-        <div class="content flex-grow-1 ms-0 p-3">
+        <div class="content flex-grow-1 ms-0 p-1">
             <div class="row mt-1 row-cols-2 row-cols-sm-3 row-cols-md-5 g-3">
                 @foreach($allAdverts as $advert)
                     <div class="col">
@@ -171,7 +171,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" style="background-color: #34c3a0; border-color:#34c3a0" data-bs-dismiss="modal"><i class="bi bi-heart-fill me-1"></i>Add to favourite</button>
+                                    <button type="button" class="btn btn-primary" style="background-color: #34c3a0; border-color:#34c3a0" data-bs-dismiss="modal" disabled><i class="bi bi-heart-fill me-1"></i>Add to favourite</button>
                                 </div>
                             </div>
                         </div>
