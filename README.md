@@ -1,3 +1,7 @@
+<p align="center">
+    <img src="./public/logo.png" alt="Project logo">
+</p>
+
 # Seller.lv
 
 Seller.lv is a classifieds platform designed for businesses and individuals to post and browse listings. The project leverages modern web technologies to provide a robust and efficient user experience.
