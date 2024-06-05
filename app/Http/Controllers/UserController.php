@@ -147,27 +147,34 @@ class UserController extends Controller
         $d = UserData::query()->with('userDataType')->get();
         $query = UserData::query()->where('userID', $id);
         foreach ($d as $value){
-            switch ($value->userDataType['value']){
+            switch ($value->userDataType['value'] ?? ''){
                 case 'email':
-                    UserData::query()->where('userID', $id)->where('userDataTypeID', $value->id)
-                        ->update([
+                    UserData::query()->where('userID', $id)->where('userDataTypeID', $value->userDataTypeID)
+                        ->upsert([
                             'value' => $validated['email'],
-                            'isPrivate' => isset($validated['email_private'])
-                        ]);
+                            'isPrivate' => isset($validated['email_private']),
+                            'userID' => $id,
+                            'userDataTypeID' => $value->userDataTypeID
+                        ], ['userID', 'userDataTypeID']);
                     break;
                 case 'phone':
-                    UserData::query()->where('userID', $id)->where('userDataTypeID', $value->id)
-                        ->update([
+//                    dd([$id, $value->userDataTypeID]);
+                    UserData::query()->where('userID', $id)->where('userDataTypeID', $value->userDataTypeID)
+                        ->upsert([
                             'value' => $validated['phone'],
-                            'isPrivate' => isset($validated['phone_private'])
-                        ]);
+                            'isPrivate' => isset($validated['phone_private']),
+                            'userID' => $id,
+                            'userDataTypeID' => $value->userDataTypeID
+                        ], ['userID', 'userDataTypeID']);
                     break;
                 case 'web':
-                    UserData::query()->where('userID', $id)->where('userDataTypeID', $value->id)
-                        ->update([
+                    UserData::query()->where('userID', $id)->where('userDataTypeID', $value->userDataTypeID)
+                        ->upsert([
                             'value' => $validated['web'],
-                            'isPrivate' => isset($validated['web_private'])
-                        ]);
+                            'isPrivate' => isset($validated['web_private']),
+                            'userID' => $id,
+                            'userDataTypeID' => $value->userDataTypeID
+                        ], ['userID', 'userDataTypeID']);
                     break;
             }
         }
