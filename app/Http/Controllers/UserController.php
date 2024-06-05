@@ -53,13 +53,22 @@ class UserController extends Controller
 
     }
 
-    public function login(Request $request){
-        $validator = Validator::make($request->all(), ['email'=>'required|email','password'=>'required']);
+    public function login(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+            'remember' => 'boolean'
+        ]);
+
         if ($validator->fails()) {
-            return $validator->errors();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
+
         $validated = $validator->validated();
-        if (Auth::attempt($validated)) {
+
+        $remember = $request->has('remember') ? $request->input('remember') : false;
+
+        if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']], $remember)) {
             $request->session()->regenerate();
 
             return redirect('/home');
@@ -67,8 +76,7 @@ class UserController extends Controller
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
-        ]);
-
+        ])->withInput();
     }
 
     public function create(Request $request){

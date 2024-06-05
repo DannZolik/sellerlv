@@ -39,7 +39,7 @@
 
         <div class="checkbox mb-3 mt-3">
             <label>
-                <input type="checkbox" value="remember-me" name="remember" id="remember"> Remember me
+                <input type="checkbox" name="remember" id="remember" value="1"> Remember me
             </label>
         </div>
         <button class="w-100 btn btn-lg btn-primary" type="submit" style="background-color: #34c3a0; border-color:#34c3a0">Sign in</button>
