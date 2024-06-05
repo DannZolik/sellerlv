@@ -62,3 +62,5 @@ Serve the application:
 
 The application will be accessible at http://localhost:8000.
 
+## Test cases
+https://pikcrvtlv-my.sharepoint.com/:w:/g/personal/11dpdgrigorjevs_rvt_lv/EXalrJlI5aFLtNe5HP9npyABk6mVAym_1cyE4f95w4Xjiw?e=oP3tmY
